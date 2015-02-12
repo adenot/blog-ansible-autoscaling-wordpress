@@ -1,0 +1,16 @@
+---
+ - hosts: localhost
+   connection: local
+   gather_facts: false
+   vars:
+    - type: "webservers"
+   pre_tasks:
+    - include_vars: ec2_vars/{{type}}.yml
+   roles:
+    - provision-ec2 
+
+ - hosts: webservers
+   roles:
+    - common
+    - nginx
+    - deploy-web

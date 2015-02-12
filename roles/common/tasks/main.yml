@@ -1,0 +1,17 @@
+ - name: Update apt cache 
+   sudo: yes
+   apt: update_cache=yes
+
+ - name: Install various packages
+   apt: 
+     pkg: "{{ item }}" 
+     state: latest
+   sudo: yes
+   with_items:
+     - git
+     - vim
+     - ntpdate
+
+ - name: NTP update using cron
+   sudo: yes
+   cron: name="ntpdate" special_time=hourly job="/usr/sbin/ntpdate pool.ntp.org ntp.ubuntu.com"

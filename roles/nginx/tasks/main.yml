@@ -1,0 +1,12 @@
+ - name: Install nginx
+   apt: 
+     pkg: "nginx"
+     state: "latest"
+   sudo: yes
+
+ - name: Start nginx on boot
+   service:
+     name: "nginx"
+     state: "started"
+     enabled: "yes"
+   sudo: yes

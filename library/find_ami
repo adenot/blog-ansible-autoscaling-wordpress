@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+# import some python modules that we'll use.  These are all
+# available in Python's core
+
+import datetime
+import sys
+import json
+import os
+import shlex
+import boto.ec2
+
+# read the argument string from the arguments file
+args_file = sys.argv[1]
+args_data = file(args_file).read()
+
+name = ""
+region = ""
+
+arguments = shlex.split(args_data)
+for arg in arguments:
+
+  # ignore any arguments without an equals in it
+  if not "=" in arg:
+    continue
+
+  (key, value) = arg.split("=")
+
+  if key == "name":
+    name = value
+
+  if key == "region":
+    region = value
+
+
+connection = boto.ec2.connect_to_region(region)
+images = connection.get_all_images(owners=['self'])
+image_id = None
+
+for image in images:
+  if image.name == name:
+    image_id = image.id
+
+print json.dumps({"image_id": image_id})

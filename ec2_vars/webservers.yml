@@ -1,0 +1,9 @@
+ec2_keypair: "Allan-DEMO1"
+ec2_security_group: "sg-f7933792"
+ec2_instance_type: "t2.small"
+ec2_image: "ami-ca381398"
+ec2_subnet_ids: ['subnet-ff934c9a','subnet-9b27d4ec']
+ec2_region: "ap-southeast-1"
+ec2_tag_Name: "Webserver"
+ec2_tag_Type: "webservers"
+ec2_volume_size: 8

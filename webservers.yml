@@ -1,0 +1,6 @@
+---
+ - hosts: webservers
+   roles:
+    - common
+    - nginx
+    - deploy-web

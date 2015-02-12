@@ -1,0 +1,14 @@
+---
+ - hosts: all
+   connection: local
+   tasks:
+    - local_action: >
+       route53
+       command=create
+       zone=yourawesomedomain.com
+       record={{ec2_tag_Name}}.yourawesomedomain.com
+       type=A
+       ttl=300
+       value={{ec2_ip_address}}
+       overwrite=yes
+
