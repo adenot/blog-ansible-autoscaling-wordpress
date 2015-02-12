@@ -20,7 +20,7 @@
        register: ami
 
      - name: Creating Launch Configuration
-       ec2_lc2:
+       ec2_lc:
          name: "{{ type }}-{{ version }}"
          key_name: "{{ ec2_keypair }}"
          instance_type: "{{ ec2_instance_type }}"
