@@ -5,7 +5,8 @@
    vars:
      - region: "ap-southeast-1"
      - type: "webservers"
-     - template_host: "{{ hostvars[groups['tag_Testing_passed'][0]] }}"
+     - template_host: "{{ hostvars[groups['tag_Name_prototype'][0]] }}"
+     - version: "2"
      
    tasks:
      - include_vars: ec2_vars/{{type}}.yml

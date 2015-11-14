@@ -1,0 +1,55 @@
+---
+ - name: Provisioning Prototype Server
+   hosts: localhost
+   connection: local
+   gather_facts: false
+   pre_tasks:
+     - include_vars: ec2_vars/webservers.yml
+   roles:
+     - provision-ec2
+
+ - name: Configuring Prototype Server
+   hosts: webservers_prototype
+   sudo: yes
+   gather_facts: false
+   tasks:
+     - name: Upload local playbooks
+       copy: src=local_webserver/ansible dest=/etc
+
+ - hosts: localhost
+   connection: local
+   gather_facts: false
+   vars:
+     - region: "ap-southeast-1"
+     - version: "{{ lookup('pipe','date +%s') }}" # Using unixtime as version
+     - stack_name: "wordpress-staging-1"          # Name of the stack, keep the same to update
+                                                  # Here is where you define an environment     
+
+   tasks:
+     - name: Registering new AMI from prototype server
+       ec2_ami:
+         instance_id: "{{ ec2.instances[0].id }}"
+         region: "{{ region }}"
+         wait: yes
+         no_reboot: yes
+         name: "webservers-{{ version }}"
+         description: "webservers-{{ version }}"
+       register: ami
+
+     - name: Creating/Updating Stack with latest AMI
+       cloudformation: 
+         stack_name: "{{ stack_name }}"
+         state: "present"
+         region: "{{ ec2_region }}"
+         disable_rollback: true
+         template: "cloudformation/wordpress.json"
+         template_parameters: 
+           KeyName: "{{ ec2_keypair }}"
+           InstanceType: "{{ ec2_instance_type }}"
+           DBClass: "{{ rds_class }}"
+           SSHLocation: "0.0.0.0/0"
+           DBPassword: "{{ rds_password }}"
+           DBAllocatedStorage: "{{ rds_storage_size }}"
+           AMIId: "{{ ami.image_id }}"
+           VPCId: "{{ vpc_id }}"
+           SubnetIds: "{{ ec2_subnet_ids|join(',') }}"

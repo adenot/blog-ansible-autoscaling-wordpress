@@ -1,0 +1,23 @@
+---
+ - hosts: all
+   gather_facts: yes
+   sudo: yes
+   remote_user: ubuntu
+   vars:
+     server_hostname: "{{ ansible_local.cloudformation.elb.hostname }}"
+     wp_version: 4.2.4
+     wp_sha256sum: 42ca594afc709cbef8528a6096f5a1efe96dcf3164e7ce321e87d57ae015cc82
+     wp_db_host: "{{ ansible_local.cloudformation.database.hostname }}"
+     wp_db_name: wordpress
+     wp_db_user: root
+     wp_db_password: "{{ ansible_local.cloudformation.database.password }}"
+     mysql_port: 3306
+
+   pre_tasks:
+    - name: Update apt cache
+      apt: update_cache=yes cache_valid_time=3600
+
+   roles:
+    - nginx
+    - php-fpm
+    - wordpress
