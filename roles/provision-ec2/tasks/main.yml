@@ -2,7 +2,7 @@
  - name: Provision EC2 Box
    local_action:
      module: ec2
-     id: "{{ ec2_tag_Name }}"
+     id: "{{ ec2_tag_Name }}-1"
      key_name: "{{ ec2_keypair }}"
      group_id: "{{ ec2_security_group }}"
      instance_type: "{{ ec2_instance_type }}"
@@ -25,7 +25,7 @@
 
  - add_host: 
      name: "{{ item.public_ip }}"
-     groups: "{{ ec2_tag_Type }}_prototype"
+     groups: "{{ ec2_tag_Type }}"
      ec2_region: "{{ ec2_region }}"
      ec2_tag_Name: "{{ ec2_tag_Name }}"
      ec2_ip_address: "{{ item.public_ip }}"

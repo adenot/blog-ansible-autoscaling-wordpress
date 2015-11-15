@@ -1,20 +1,20 @@
 ---
- - name: Provisioning Prototype Server
+ - name: Provisioning Baking Server
    hosts: localhost
    connection: local
    gather_facts: false
    pre_tasks:
-     - include_vars: ec2_vars/webservers.yml
+     - include_vars: ec2_vars/wordpress-bake.yml
    roles:
      - provision-ec2
 
- - name: Configuring Prototype Server
-   hosts: webservers_prototype
+ - name: Configuring Baking Server
+   hosts: wordpress-bake
    sudo: yes
    gather_facts: false
    tasks:
      - name: Upload local playbooks
-       copy: src=local_webserver/ansible dest=/etc
+       copy: src=local_wordpress/ansible dest=/etc
 
  - hosts: localhost
    connection: local
@@ -32,8 +32,8 @@
          region: "{{ region }}"
          wait: yes
          no_reboot: yes
-         name: "webservers-{{ version }}"
-         description: "webservers-{{ version }}"
+         name: "wordpress-{{ version }}"
+         description: "wordpress-{{ version }}"
        register: ami
 
      - name: Creating/Updating Stack with latest AMI

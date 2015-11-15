@@ -1,5 +1,5 @@
 ---
- - hosts: all
+ - hosts: local
    gather_facts: yes
    sudo: yes
    remote_user: ubuntu

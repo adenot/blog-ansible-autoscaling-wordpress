@@ -3,5 +3,3 @@
 
 [all:vars]
 ansible_ssh_private_key_file = ~/keys/Allan-DEMO1.pem
-
-[webservers_prototype]

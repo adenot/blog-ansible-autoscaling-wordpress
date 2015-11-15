@@ -1,2 +1,0 @@
- - name: Deploy App
-   debug: msg="ok"
