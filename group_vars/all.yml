@@ -1,0 +1,39 @@
+---
+  region: "ap-southeast-1"
+
+# Baking Server Variables
+
+  ec2_keypair: "Allan-DEMO1"
+  ansible_ssh_private_key_file: ~/{{ ec2_keypair }}.pem # File location for accessing host
+
+  ec2_security_group: "sg-f7933792"
+  ec2_instance_type: "t2.small"
+  ec2_image: "ami-ca381398" # Ubuntu
+
+  ec2_region: "{{ region }}"
+  ec2_subnet_ids: ['subnet-ff934c9a','subnet-9b27d4ec']
+  ec2_tag_Name: "wordpress-bake-1" # Tag to identify the host
+                                   # Change name when new baking need to be created
+
+  ec2_tag_Type: "wordpress-bake" # Also the Ansible group name that host will be added.
+  ec2_volume_size: 8
+
+# CloudFormation Stack Variables
+
+  cf_keypair: "{{ ec2_keypair }}"
+  cf_instance_type: "c3.large"
+  cf_subnet_ids: "{{ ec2_subnet_ids }}"
+
+  vpc_id: "vpc-e3b34886"
+
+  region: "ap-southeast-1"
+
+  version: "{{ lookup('pipe','date +%s') }}" # Using unixtime as version
+
+  stack_name: "wordpress-staging-1" # Name of the stack, keep the same to prevent
+                                    # creating new ones if same name exists
+                                    # Use different names to set environments
+
+  rds_class: "db.t2.micro"
+  rds_password: "password123"
+  rds_storage_size: 5
