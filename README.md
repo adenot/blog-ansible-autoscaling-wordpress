@@ -30,7 +30,13 @@ Edit file:
     
 Set variables from your EC2 account.
 
-Running:
+Make sure to create the required AWS resources for the baking server:
+
+- EC2 Keypair
+- VPC, Subnet (if not exists)
+- Security group - Port 22/tcp must be open
+
+Running it:
 
     ansible-playbook -vv stack-wordpress.yml
     
